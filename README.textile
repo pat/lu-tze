@@ -1,0 +1,29 @@
+h1. Lu Tze
+
+We all know backups are important. However, they're often annoying. So, Lu Tze is a service for automating database backups. It sends an SQL dump of your database off to a remote backup service (Historian). It's been built to work just on Heroku (so PostgreSQL only), although there's potential for it to expand later down the track.
+
+At this point, I've not open-sourced Historian, so while you can look at this side of the code, it's not particularly useful. I'm planning to provide a better overview soon, though.
+
+h2. Installation and Usage
+
+Firstly, you'll want to add Lu Tze as a gem requirement - when you're using Bundler (probably with Rails 3), that's a piece of cake with a single line in your Gemfile:
+
+<pre><code>gem 'lu-tze', '0.2.0', :require => 'lu_tze'</code></pre>
+
+For those using Rails 2.x, it's slightly more complicated - you need it in both @config/environment.rb@:
+
+<pre><code>config.gem 'lu-tze', :version => '0.2.0', :lib => 'lu_tze'</code></pre>
+
+... and then add it to the .gems file that Heroku expects:
+
+<pre><code>lu-tze --version 0.2.0</code></pre>
+
+Heroku's free daily cron job is all that's needed to put it all together - I use something like the following in @lib/tasks/cron.rake@:
+
+<pre><code>task :cron => :environment do
+  LuTze.gather_and_send
+end</code></pre>
+
+h2. Copyright
+
+Copyright (c) 2010 Pat Allan, released under an MIT licence.
