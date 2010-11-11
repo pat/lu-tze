@@ -32,12 +32,24 @@ class LuTze
   
   def dump_command
     cmd = ""
-    cmd += "echo #{config[:password]} | " if config[:password].present?
-    cmd += "pg_dump --format=p --file=#{file_name}"
-    cmd += " --host=#{config[:host]}" if config[:host].present?
-    cmd += " --port=#{config[:port]}" if config[:port].present?
-    cmd += " --username=#{config[:username]}" if config[:username].present?
-    cmd += " #{config[:database]}"
+    
+    if config[:adapter] == 'postgresql'
+      cmd += "echo #{config[:password]} | " if config[:password].present?
+      cmd += "pg_dump --format=p --file=#{file_name}"
+      cmd += " --host=#{config[:host]}" if config[:host].present?
+      cmd += " --port=#{config[:port]}" if config[:port].present?
+      cmd += " --username=#{config[:username]}" if config[:username].present?
+      cmd += " #{config[:database]}"
+    else
+      cmd += "mysqldump --format=p --result-file=#{file_name}"
+      cmd += " --host=#{config[:host]}" if config[:host].present?
+      cmd += " --port=#{config[:port]}" if config[:port].present?
+      cmd += " --user=#{config[:username]}" if config[:username].present?
+      cmd += " --password=#{config[:password]}" if config[:username].present?
+      cmd += " #{config[:database]}"
+    end
+    
+    cmd
   end
   
   def compress_command
