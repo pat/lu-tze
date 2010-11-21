@@ -41,7 +41,7 @@ class LuTze
       cmd += " --username=#{config[:username]}" if config[:username].present?
       cmd += " #{config[:database]}"
     else
-      cmd += "mysqldump --format=p --result-file=#{file_name}"
+      cmd += "mysqldump --result-file=#{file_name}"
       cmd += " --host=#{config[:host]}" if config[:host].present?
       cmd += " --port=#{config[:port]}" if config[:port].present?
       cmd += " --user=#{config[:username]}" if config[:username].present?
